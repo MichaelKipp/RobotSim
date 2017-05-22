@@ -44,6 +44,9 @@ public class Grid {
     public int dozerFacing;
     char[] dirs = new char[] {'e','n','w','s'};
 
+
+    private int xend, yend;
+
     // if no seed given, use -1 for cur time
     public Grid(int xdim, int ydim, int numBoxes) {
 	     this(xdim, ydim, numBoxes, -1);
@@ -81,6 +84,8 @@ public class Grid {
         int toPlace = numBoxes;
         int remLocs = (xdim-2)*(ydim-2);
         int x=1, y=1;
+        int exitX=1, exitY=1;
+        int gridEndSpace;
 
         // Shouldn't need this since we won't have boxes <-----------------------------------------
         while (toPlace > 0) {
@@ -111,6 +116,7 @@ public class Grid {
         // place dozer in random start location
         x = rgen.nextInt(xdim-xdim/2) + xdim/2 - 1;
         y = ydim - 1;
+        gridEndSpace = rgen.nextInt(3);
 
         // This shouldn't need to be here since there won't be boxes <-----------------------------
         // if chosen dozer location already has a box, just search 2x2 space around
@@ -123,12 +129,57 @@ public class Grid {
             }
         }
 
+        //This will be where the exit is on the left
+        if (gridEndSpace == 0){
+          exitX = 0;
+          exitY = rgen.nextInt(ydim-ydim/2) + ydim/2 - 1;
+          if (grid[exitX][exitY] == 'X') {
+              if (grid[exitX][exitY+1] != 'X') exitY++;
+              else if (grid[exitX][exitY-1] != 'X') exitY--;
+              else {
+                  exitY--;
+              }
+          }
+        }
+
+
+
+
+        //This will be where the exit is in front
+        if (gridEndSpace == 1) {
+          exitX = rgen.nextInt(xdim-xdim/2) + xdim/2 - 1;
+          exitY = 0;
+          if (grid[exitX][exitY] == 'X') {
+              if (grid[exitX+1][exitY] != 'X') exitX++;
+              else if (grid[exitX-1][exitY] != 'X') exitX--;
+              else {
+                  exitX--;
+              }
+          }
+        }
+
+
+        //This will be where the exit is on the right
+        if (gridEndSpace == 2){
+          exitX = xdim - 1;
+          exitY = rgen.nextInt(ydim-ydim/2) + ydim/2 - 1;
+          if (grid[exitX][exitY] == 'X') {
+              if (grid[exitX][exitY+1] != 'X') exitY++;
+              else if (grid[exitX][exitY-1] != 'X') exitY--;
+              else {
+                  exitY--;
+              }
+          }
+        }
+
         // This shouldn't need to be here since there won't be boxes <-----------------------------
       	// if 2x2 square is all blocks because of one weird case, oh well, put dozer
       	// somewhere at least, even if shares location with block
         grid[x][y] = 'D';
         dozerX = x;
         dozerY = y;
+
+        grid[exitX][exitY] = '*';
 
         // Change so the robot faces inwards <-----------------------------------------------------
         // set dozer to face random direction
