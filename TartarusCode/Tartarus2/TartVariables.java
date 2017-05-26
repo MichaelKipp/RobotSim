@@ -31,7 +31,7 @@ public class TartVariables extends GPVariables {
     public int NumTestGrids = 10;
 
     //number of moves dozer makes on each grid
-    public int NumSteps = 80;
+    public int NumSteps = 40;
 
     //number of blocks to place on the grid
     public int NumBlocks = 0;

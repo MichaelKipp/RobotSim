@@ -48,48 +48,49 @@ public class TartGene extends GPGene {
 
     //called by TartGP.evaluate() for main branch of each GP
     int evaluate(TartVariables cfg, TartGP gp, PrintStream os, BufferedWriter out) {
-	//
-	if (cfg.dozerGrid.getStepsTaken() >= cfg.NumSteps) return 1;
+  	//
+  	if (cfg.dozerGrid.getStepsTaken() >= cfg.NumSteps) return 1;
 
-        int val = node.value();
+          int val = node.value();
 
-	// terminal, dozer takes corresponding action
-        if (val<=2) {
-            if(out != null){
-                if (val == Grid.LFT) cfg.dozerGrid.left(out);
-                else if (val==Grid.RGT) cfg.dozerGrid.right(out);
-                else if (val==Grid.FWD) cfg.dozerGrid.forward(out);
-            } else {
-                if (val == Grid.LFT) cfg.dozerGrid.left();
-                else if (val==Grid.RGT) cfg.dozerGrid.right();
-                else if (val==Grid.FWD) cfg.dozerGrid.forward();
-            }
-        }
+  	// terminal, dozer takes corresponding action
+          if (val<=2) {
+              if(out != null){
+                  if (val == Grid.LFT) cfg.dozerGrid.left(out);
+                  else if (val==Grid.RGT) cfg.dozerGrid.right(out);
+                  else if (val==Grid.FWD) cfg.dozerGrid.forward(out);
+              } else {
+                  if (val == Grid.LFT) cfg.dozerGrid.left();
+                  else if (val==Grid.RGT) cfg.dozerGrid.right();
+                  else if (val==Grid.FWD) cfg.dozerGrid.forward();
+              }
+              cfg.dozerGrid.print();
+          }
 
-	// sensor, evaluate left child if chosen square is empty,
-	// middle child if chosen square has a box, right child if chosen square is a wall
-        else if (val <=10) {
-            int result = -1;
-            if (val==Grid.UR)
-                result = cfg.dozerGrid.sensor(1, -1);
-            else if (val==Grid.MR)
-                result = cfg.dozerGrid.sensor(0, -1);
-            else if (val==Grid.LR)
-                result = cfg.dozerGrid.sensor(-1, -1);
-            else if (val==Grid.UM)
-                result = cfg.dozerGrid.sensor(1, 0);
-            else if (val==Grid.LM)
-                result = cfg.dozerGrid.sensor(-1, 0);
-            else if (val==Grid.UL)
-                result = cfg.dozerGrid.sensor(1, 1);
-            else if (val==Grid.ML)
-                result = cfg.dozerGrid.sensor(0, 1);
-            else if (val==Grid.LL)
-                result = cfg.dozerGrid.sensor(-1, 1);
+  	// sensor, evaluate left child if chosen square is empty,
+  	// middle child if chosen square has a box, right child if chosen square is a wall
+          else if (val <=10) {
+              int result = -1;
+              if (val==Grid.UR)
+                  result = cfg.dozerGrid.sensor(1, -1);
+              else if (val==Grid.MR)
+                  result = cfg.dozerGrid.sensor(0, -1);
+              else if (val==Grid.LR)
+                  result = cfg.dozerGrid.sensor(-1, -1);
+              else if (val==Grid.UM)
+                  result = cfg.dozerGrid.sensor(1, 0);
+              else if (val==Grid.LM)
+                  result = cfg.dozerGrid.sensor(-1, 0);
+              else if (val==Grid.UL)
+                  result = cfg.dozerGrid.sensor(1, 1);
+              else if (val==Grid.ML)
+                  result = cfg.dozerGrid.sensor(0, 1);
+              else if (val==Grid.LL)
+                  result = cfg.dozerGrid.sensor(-1, 1);
 
-            ( (TartGene)get(result) ).evaluate(cfg, gp, os, out);
-         }
+              ( (TartGene)get(result) ).evaluate(cfg, gp, os, out);
+           }
 
-	return 0;
+  	       return 0;
     }
 }

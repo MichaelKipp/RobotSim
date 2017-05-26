@@ -28,11 +28,13 @@ public class Grid {
     private char[][] grid;
     private int xdim, ydim;
     private int exitX = 1, exitY = 1;
+    private boolean finished;
     private Random rgen;
     private int numBoxes = 0;
     private int dozerX, dozerY;
     private int dozerFacing;
     private int steps;
+    private int originalSteps = 20;
     char[] dirs = new char[] {'e','n','w','s'};
 
     // if no seed given, use -1 for cur time
@@ -61,6 +63,7 @@ public class Grid {
       	if (seed == -1) rgen = new Random();
       	else rgen = new Random(seed);
 
+        finished = false;
         steps = 0;
         initGrid();
     }
@@ -99,7 +102,7 @@ public class Grid {
         }
 
         // place dozer in random start location
-        x = rgen.nextInt(xdim-xdim/2) + xdim/2 - 1;
+        x = rgen.nextInt(xdim-xdim/2) + xdim/2 - 2;
         y = ydim - 1;
         gridEndGate = rgen.nextInt(3);
 
@@ -161,12 +164,14 @@ public class Grid {
         grid[exitX][exitY] = '*';
 
         // set dozer to face random direction
-        dozerFacing = 1;
+        dozerFacing = 2;
     }
 
     // used to keep track of how many steps a single pass through the GP tree uses
     public int getStepsTaken() { return steps; }
-    public void setSteps(int nsteps) { steps = nsteps; }
+    public void setSteps(int nsteps) {
+      steps = nsteps;
+    }
 
     // if no out file specified, use null
     public void left() {
@@ -310,7 +315,10 @@ public class Grid {
     // determine the fitness of the current state of the grid. fitness is (maxScore+1) - score
     // where score is the number of sides of blocks that are touching a wall
     public double calcFitness() {
-        return 0.0 + (steps * 0.1) + Math.sqrt(Math.pow((dozerX - exitX), 2) + Math.pow((dozerY - exitY), 2));
+        System.out.println(steps);
+        System.out.println(originalSteps);
+        System.out.println(0.0 + (((steps + 1)/(originalSteps + 1)) * 10) + Math.sqrt(Math.pow((dozerX - exitX), 2) + Math.pow((dozerY - exitY), 2)));
+        return 0.0 + (((steps + 1)/(originalSteps + 1)) * 10) + Math.sqrt(Math.pow((dozerX - exitX), 2) + Math.pow((dozerY - exitY), 2));
     }
 
     // print the current state of the grid, showing blocks and the dozer
@@ -380,5 +388,15 @@ public class Grid {
         } catch (IOException e) {
             System.out.println("Error while writing to file in fitness method");
         }
+    }
+
+    public void isFinished() {
+      if (dozerX == exitX && dozerY == exitY) {
+        finished = true;
+      }
+    }
+
+    public boolean getFinished() {
+      return finished;
     }
 }
