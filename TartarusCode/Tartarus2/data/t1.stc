@@ -1,0 +1,107 @@
+PopulationSize            = 20
+NumberOfGenerations       = 50
+CrossoverProbability      = 50.0
+CreationProbability       = 0.0
+CreationType              = Grow
+MaximumDepthForCreation   = 8
+MaximumDepthForCrossover  = 16
+MaximumComplexity         = 100
+SelectionType             = Tournament
+TournamentSize            = 5
+DemeSize                  = 100
+DemeticMigProbability     = 100.0
+SwapMutationProbability   = 10.0
+ShrinkMutationProbability = 10.0
+TerminationFitness        = 0.0
+GoodRuns                  = 0
+DemeticGrouping           = false
+AddBestToNewPopulation    = true
+SteadyState               = false
+PrintDetails              = false
+PrintPopulation           = false
+PrintExpression           = true
+PrintTree                 = true
+TreeFontSize              = 12
+UseADFs                   = false
+TestDiversity             = false
+ComplexityAffectsFitness  = false
+CheckpointGens            = 10
+TestCheckpoint            = true
+WorldHorizontal           = 8
+WorldVertical             = 8
+NumTestGrids              = 20
+NumBlocks                 = 0
+NumSteps                  = 20
+NumCheckpointTestGrids    = 2
+
+RPB:  ur(3) um(3) ul(3) mr(3) ml(3) lr(3) lm(3) ll(3) forward right left
+
+
+Run number 1 (good runs 0)
+Too complex 320
+
+ Gen|              Fitness           |   Complexity    |    Depth   
+    |      Best    Average      Worst|   B      A     W|  B    A   W
+   0|     13.63      14.70      16.25|  40   40.0    40|  4  4.0   4  
+   1|     12.93      14.35      15.87|  40   40.0    40|  4  4.0   4  
+   2|     12.32      13.25      15.43|  37   39.2    28|  4  4.2   4  
+   3|     12.30      12.90      15.42|  37   39.4    37|  4  4.2   4  
+   4|     12.30      12.95      15.42|  37   38.5     4|  4  4.3   2  
+   5|     11.74      13.00      15.44|  37   38.0    13|  4  4.3   3  
+   6|     11.74      12.80      15.46|  37   36.6     4|  4  4.1   2  
+   7|     11.74      12.85      15.87|  37   41.0    58|  4  4.4   5  
+   8|     11.34      12.95      15.42|  43   48.6    19|  5  5.0   4  
+   9|     11.34      13.00      15.65|  43   46.2    31|  5  4.9   4  
+  10|     11.34      12.90      15.57|  43   51.1    49|  5  5.2   5 c
+  11|     11.34      13.20      15.46|  43   49.9    37|  5  5.0   5  
+  12|     11.34      13.05      15.70|  43   55.2    52|  5  5.0   5  
+  13|     11.28      12.75      15.82|  46   47.8    67|  5  4.9   5  
+  14|     11.28      12.75      15.56|  46   42.8    25|  5  5.0   4  
+  15|     11.28      12.75      15.48|  46   45.1     4|  5  5.2   2  
+  16|     10.60      12.35      14.80|  55   45.1     4|  6  5.1   2  
+  17|     10.60      12.85      15.94|  55   49.4    64|  6  5.2   6  
+  18|     10.60      12.75      14.62|  55   47.6    46|  6  5.3   5  
+  19|     10.60      12.80      14.10|  55   47.6    31|  6  5.4   5  
+  20|     10.60      13.30      15.56|  55   49.3    46|  6  5.4   5 c
+  21|     10.60      12.60      15.03|  55   49.9    37|  6  5.4   4  
+  22|     10.60      12.45      15.49|  55   51.0    46|  6  5.6   6  
+  23|     10.60      13.00      15.29|  55   58.6    31|  6  6.0   4  
+  24|     10.60      12.90      15.56|  55   61.2    55|  6  6.4   6  
+  25|     10.60      13.05      15.86|  55   55.0    52|  6  6.0   6  
+  26|     10.60      12.60      14.78|  55   54.8    55|  6  6.0   6  
+  27|     10.60      12.55      14.37|  55   53.6    46|  6  6.0   6  
+  28|     10.60      13.20      16.27|  55   54.8    64|  6  5.9   6  
+  29|     10.60      13.15      15.68|  55   50.4    31|  6  5.8   5  
+  30|     10.60      12.80      15.19|  55   52.0    28|  6  5.8   5 c
+  31|     10.60      12.75      15.50|  55   53.6    52|  6  6.0   6  
+  32|      9.75      12.80      15.71|  61   53.4    13|  7  6.0   3  
+  33|      9.75      12.85      14.78|  61   56.2    58|  7  6.0   7  
+  34|      9.75      12.75      15.09|  61   49.6    10|  7  5.8   3  
+  35|      9.75      12.80      15.84|  61   54.2    22|  7  5.9   4  
+  36|      9.75      12.80      14.90|  61   52.4    61|  7  5.9   7  
+  37|      9.75      12.55      15.38|  61   57.0    55|  7  6.5   7  
+  38|      9.75      12.85      15.82|  61   56.0    37|  7  6.4   6  
+  39|      9.75      13.00      15.63|  61   57.4    46|  7  6.6   7  
+  40|      9.75      12.45      14.85|  61   61.3    91|  7  6.5   7 c
+  41|      9.75      12.30      14.23|  61   68.2    55|  7  7.2   6  
+  42|      9.75      12.50      15.49|  61   70.2    43|  7  7.3   6  
+  43|      9.75      12.90      15.59|  61   63.7    67|  7  6.9   7  
+  44|      9.75      12.70      14.65|  61   59.4    52|  7  6.6   6  
+  45|      9.75      12.70      14.41|  61   55.9    52|  7  6.4   6  
+  46|      9.75      12.65      15.34|  61   48.7    46|  7  5.9   6  
+  47|      9.75      12.70      15.97|  61   54.2    55|  7  6.2   7  
+  48|      9.75      12.95      15.46|  61   61.6    61|  7  6.2   7  
+  49|      9.75      12.95      14.89|  61   63.2    28|  7  6.4   4  
+  50|      9.75      12.70      16.32|  61   60.1     4|  7  6.1   2 c
+
+========================================================================
+Generation:50 best:10 worst:1
+  GP#           dad           mum oper mut shrk mut    fitness  len  dep
+===== ============= ============= ======== ======== ========== ==== ====
+B  10            10                                       9.75   61    7
+
+RPB:  (ml (lm (ur forward left left) forward (ml forward forward left)) (ur (ul left right forward) (ur (ml right left forward) (mr right forward right) (ll (lm (ur forward left left) forward (ml forward forward left)) (lr forward right right) (mr right forward right))) (lr left left right)) (ll (ml forward forward left) (lr forward right right) (mr right forward right)))
+
+
+Run time 36.59 seconds, 0.66 seconds/generation
+

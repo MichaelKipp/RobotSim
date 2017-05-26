@@ -1,15 +1,15 @@
 // gpjpp (genetic programming package for Java)
 // Copyright (c) 1997, Kim Kokkonen
 //
-// This program is free software; you can redistribute it and/or 
-// modify it under the terms of version 2 of the GNU General Public 
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of version 2 of the GNU General Public
 // License as published by the Free Software Foundation.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -24,12 +24,12 @@ import java.util.Properties;
 
 /**
  * Extends the standard Properties class. GPProperties fixes mishandling
- * of tab and space in the load() method of JDK 1.0 (fixed in JDK 1.1). 
- * It makes keynames case-insensitive ala Windows ini files. 
- * And it allows comments at the end of each line, delimited by the 
- * first space, tab, #, or ! character after the value string. 
- * This means that the value string cannot contain any of these 
- * characters, of course, but this does not impose an important 
+ * of tab and space in the load() method of JDK 1.0 (fixed in JDK 1.1).
+ * It makes keynames case-insensitive ala Windows ini files.
+ * And it allows comments at the end of each line, delimited by the
+ * first space, tab, #, or ! character after the value string.
+ * This means that the value string cannot contain any of these
+ * characters, of course, but this does not impose an important
  * limitation for this package.
  *
  * @version 1.0
@@ -59,7 +59,7 @@ public class GPProperties extends Properties {
      * replaces Properties.load() with the following differences:
      * fixes bugs in handling embedded tab and space characters
      * in JDK 1.0; terminates the value string with the first
-     * space, tab, !, or # character, treating the rest of the 
+     * space, tab, !, or # character, treating the rest of the
      * line as a comment; and forces key strings to lowercase
      * before adding them to the property table.
      *

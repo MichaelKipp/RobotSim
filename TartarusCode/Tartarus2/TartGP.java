@@ -46,13 +46,12 @@ public class TartGP extends GP {
     public double evaluate(GPVariables cfg) {
 
         TartVariables tcfg = (TartVariables)cfg;
-
         double totFit = 0;
         // test GP on N random boards
         for (int k = 0; k < tcfg.NumTestGrids; k++) {
             //create new random grid
             tcfg.createGrid();
-
+            System.out.println("---------- POPULATION " + k + "-----------");
             //evaluate main tree for max steps (set in .ini file) of the dozer
 	          tcfg.dozerGrid.setSteps(0);
 	          int done = 0;
@@ -64,6 +63,7 @@ public class TartGP extends GP {
                 done = ((TartGene)get(0)).evaluate(tcfg, this);
                 tcfg.dozerGrid.isFinished();
 	          }
+            tcfg.dozerGrid.print();
             totFit += tcfg.dozerGrid.calcFitness();
         }
         totFit = totFit/tcfg.NumTestGrids;
@@ -72,6 +72,7 @@ public class TartGP extends GP {
             totFit += length()/1000.0;
 
         //return standard fitness
+        System.out.println("Total Fitness: " + totFit);
         return totFit;
     }
 
@@ -82,7 +83,7 @@ public class TartGP extends GP {
 
     //method called on best of population at each checkpoint
     public void testBest(GPVariables cfg){
-	     TartVariables tcfg = (TartVariables)cfg;
+	      TartVariables tcfg = (TartVariables)cfg;
         BufferedWriter out = null;
         try{
             //sets it to append mode
@@ -113,18 +114,18 @@ public class TartGP extends GP {
 	    tcfg.dozerGrid.setSteps(0);
 	    int done = 0;
             while (done == 0) {
-                // evaluate tree recursively starting with the root node
-		// if returns 0, means went through entire tree without reaching
-		// max steps, so start over again with root
-		// when max steps is reached, returns 1, quit evaluation
-                done = ((TartGene)get(0)).evaluate(tcfg, null, null, out);
-		try{
+              // evaluate tree recursively starting with the root node
+          		// if returns 0, means went through entire tree without reaching
+          		// max steps, so start over again with root
+          		// when max steps is reached, returns 1, quit evaluation
+              done = ((TartGene)get(0)).evaluate(tcfg, null, null, out);
+		          try{
                     //finished one tree eval
                     out.write("-------\n");
                 }catch(IOException exception){
                     System.out.println("Error writing to file");
                 }
-	    }
+	            }
 
             curGridFit = tcfg.dozerGrid.calcFitness();
             tcfg.dozerGrid.outputFitness(out, curGridFit);

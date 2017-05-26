@@ -23,6 +23,7 @@ public class Grid {
     public final static int UL = 8;
     public final static int ML = 9;
     public final static int LL = 10;
+    public final static int FC = 11;
 
     // grid private vars
     private char[][] grid;
@@ -47,7 +48,7 @@ public class Grid {
         this.xdim = xdim;
         this.ydim = ydim;
         this.numBoxes = numBoxes;
-
+        finished = false;
       	// grid is just 2d array of chars, initially fill with spaces
       	grid = new char[xdim][ydim];
               for (int i=0; i<xdim; i++)
@@ -164,7 +165,7 @@ public class Grid {
         grid[exitX][exitY] = '*';
 
         // set dozer to face random direction
-        dozerFacing = 2;
+        dozerFacing = 1;
     }
 
     // used to keep track of how many steps a single pass through the GP tree uses
@@ -315,10 +316,12 @@ public class Grid {
     // determine the fitness of the current state of the grid. fitness is (maxScore+1) - score
     // where score is the number of sides of blocks that are touching a wall
     public double calcFitness() {
-        System.out.println(steps);
-        System.out.println(originalSteps);
-        System.out.println(0.0 + (((steps + 1)/(originalSteps + 1)) * 10) + Math.sqrt(Math.pow((dozerX - exitX), 2) + Math.pow((dozerY - exitY), 2)));
-        return 0.0 + (((steps + 1)/(originalSteps + 1)) * 10) + Math.sqrt(Math.pow((dozerX - exitX), 2) + Math.pow((dozerY - exitY), 2));
+        // System.out.println(steps);
+        // System.out.println(originalSteps);
+        // System.out.println(((double)steps)/((double)originalSteps));
+        // System.out.println((steps/originalSteps) * 10);
+        System.out.println(0.0 + ((((double)steps + 1)/((double)originalSteps + 1)) * 10) + Math.sqrt(Math.pow((dozerX - exitX), 2) + Math.pow((dozerY - exitY), 2)));
+        return 0.0 + ((((double)steps + 1)/((double)originalSteps + 1)) * 10) + Math.sqrt(Math.pow((dozerX - exitX), 2) + Math.pow((dozerY - exitY), 2));
     }
 
     // print the current state of the grid, showing blocks and the dozer

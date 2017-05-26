@@ -1,15 +1,15 @@
 // gpjpp (genetic programming package for Java)
 // Copyright (c) 1997, Kim Kokkonen
 //
-// This program is free software; you can redistribute it and/or 
-// modify it under the terms of version 2 of the GNU General Public 
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of version 2 of the GNU General Public
 // License as published by the Free Software Foundation.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -22,7 +22,7 @@ import java.io.*;
 import java.util.Hashtable;
 
 /**
- * Stores a fixed-size array of genetic programs of type 
+ * Stores a fixed-size array of genetic programs of type
  * <a href="gpjpp.GP.html#_top_">GP</a>.
  * GPPopulation has methods for evolving this population by
  * fitness-based selection and reproduction, crossover, mutation,
@@ -31,11 +31,11 @@ import java.util.Hashtable;
  * And it includes a Hashtable-based data structure for measuring
  * and enforcing diversity of the individuals in the population.<p>
  *
- * GPPopulation includes references to the 
+ * GPPopulation includes references to the
  * <a href="gpjpp.GPVariables.html#_top_">GPVariables</a> configuration
- * of the run and the 
- * <a href="gpjpp.GPAdfNodeSet.html#_top_">GPAdfNodeSet</a> set of node 
- * types. These references are passed as parameters to lower level 
+ * of the run and the
+ * <a href="gpjpp.GPAdfNodeSet.html#_top_">GPAdfNodeSet</a> set of node
+ * types. These references are passed as parameters to lower level
  * classes when needed.<p>
  *
  * GPPopulation has several public data fields that can be used
@@ -48,17 +48,17 @@ import java.util.Hashtable;
  * Although GPPopulation represents a single population of individuals,
  * it is designed to work with either a single population (steady
  * state evolution) or two populations (generational evolution). This
- * behavior is implemented in the 
+ * behavior is implemented in the
  * <a href="gpjpp.GPPopulation.html#generate">generate()</a> method.<p>
  *
- * The user must always create a subclass of GPPopulation for use 
- * in solving a particular problem. This subclass must override 
- * the <a href="gpjpp.GPPopulation.html#createGP">createGP()</a> method, 
- * which creates a GP of user type. That GP subclass must in turn 
- * override the <a href="gpjpp.GP.html#evaluate">evaluate()</a> method 
+ * The user must always create a subclass of GPPopulation for use
+ * in solving a particular problem. This subclass must override
+ * the <a href="gpjpp.GPPopulation.html#createGP">createGP()</a> method,
+ * which creates a GP of user type. That GP subclass must in turn
+ * override the <a href="gpjpp.GP.html#evaluate">evaluate()</a> method
  * to compute fitness for the target problem.<p>
  *
- * Otherwise, the typical details of using GPPopulation are 
+ * Otherwise, the typical details of using GPPopulation are
  * encapsulated in the <a href="gpjpp.GPRun.html#_top_">GPRun</a> class.
  *
  * @version 1.0
@@ -130,15 +130,15 @@ public class GPPopulation extends GPContainer {
     protected double avgDepth;
 
     /**
-     * Best standardized fitness found in the entire population. 
-     * Reported by printStatistics() and calculated in 
+     * Best standardized fitness found in the entire population.
+     * Reported by printStatistics() and calculated in
      * calculateStatistics().
      */
     public double bestFitness;
 
     /**
-     * Worst standardized fitness found in the entire population. 
-     * Reported by printStatistics() and calculated in 
+     * Worst standardized fitness found in the entire population.
+     * Reported by printStatistics() and calculated in
      * calculateStatistics().
      */
     public double worstFitness;
@@ -146,7 +146,7 @@ public class GPPopulation extends GPContainer {
     /**
      * The index of the individual with the best standardized fitness.
      * In case of ties, the lower complexity wins. The GP associated
-     * with this index is obtained by 
+     * with this index is obtained by
      * <code>(GP)pop.get(bestOfPopulation)</code>.
      */
     public int bestOfPopulation;
@@ -154,7 +154,7 @@ public class GPPopulation extends GPContainer {
     /**
      * The index of the individual with the worst standardized fitness.
      * In case of ties, the higher complexity wins. The GP associated
-     * with this index is obtained by 
+     * with this index is obtained by
      * <code>(GP)pop.get(worstOfPopulation)</code>.
      */
     public int worstOfPopulation;
@@ -169,16 +169,16 @@ public class GPPopulation extends GPContainer {
 
     /**
      * A table of the unique GPs found in the population. This table
-     * is created and updated only if the 
+     * is created and updated only if the
      * <a href="gpjpp.GPVariables.html#TestDiversity">TestDiversity</a>
-     * configuration option is enabled. Each unique GP is entered in 
-     * the table along with a count of the times it appears in the 
-     * population. When TestDiversity is enabled, the initial 
-     * population is guaranteed to be 100% diverse by rejecting any 
-     * individuals that already appear in the table. For successive 
-     * generations, duplicates are allowed but the diversity is 
-     * reported by printStatistics(). The Hashtable approach to 
-     * tracking diversity is fast enough that the option can be left 
+     * configuration option is enabled. Each unique GP is entered in
+     * the table along with a count of the times it appears in the
+     * population. When TestDiversity is enabled, the initial
+     * population is guaranteed to be 100% diverse by rejecting any
+     * individuals that already appear in the table. For successive
+     * generations, duplicates are allowed but the diversity is
+     * reported by printStatistics(). The Hashtable approach to
+     * tracking diversity is fast enough that the option can be left
      * on at all times.
      */
     protected Hashtable uniqueGPs;
@@ -203,7 +203,7 @@ public class GPPopulation extends GPContainer {
     /**
      * The number of individuals that were created for generation 0
      * but rejected because their complexity exceeded the global
-     * configuration variable 
+     * configuration variable
      * <a href="gpjpp.GPVariables.html#MaximumComplexity">
      * MaximumComplexity</a>. attemptedComplexCount
      * is printed among the standard output of the GPRun class.
@@ -218,7 +218,7 @@ public class GPPopulation extends GPContainer {
 
     /**
      * Constructor used when populations are first created.
-     * This constructor creates a container capable of holding the 
+     * This constructor creates a container capable of holding the
      * population individuals, but does not create the individuals.
      * It also performs a number of consistency checks on the
      * configuration variables and node set.
@@ -293,7 +293,7 @@ public class GPPopulation extends GPContainer {
     }
 
     /**
-     * A constructor that can be called to clone a population. 
+     * A constructor that can be called to clone a population.
      * Normally not used.
      */
     public GPPopulation(GPPopulation gpo) {
@@ -314,8 +314,8 @@ public class GPPopulation extends GPContainer {
      *
      * @return the cloned object.
      */
-    protected synchronized Object clone() { 
-        return new GPPopulation(this); 
+    protected synchronized Object clone() {
+        return new GPPopulation(this);
     }
 
     /**
@@ -344,10 +344,10 @@ public class GPPopulation extends GPContainer {
     protected int getUniqueGPsSize() { return (2*cfg.PopulationSize+1); }
 
     /**
-     * Creates or clears the diversity table and the 
+     * Creates or clears the diversity table and the
      * <a href="gpjpp.GPPopulation.html#dupCount">dupCount</a> and
      * <a href="gpjpp.GPPopulation.html#attemptedDupCount">
-     * attemptedDupCount</a> fields. If 
+     * attemptedDupCount</a> fields. If
      * <a href="gpjpp.GPVariables.html#TestDiversity">TestDiversity</a>
      * is false, does nothing.
      */
@@ -364,7 +364,7 @@ public class GPPopulation extends GPContainer {
 
     /**
      * Adds the specified GP to the diversity table, or increments
-     * its count if already in the table. If 
+     * its count if already in the table. If
      * <a href="gpjpp.GPVariables.html#TestDiversity">TestDiversity</a>
      * is false, does nothing.
      */
@@ -382,7 +382,7 @@ public class GPPopulation extends GPContainer {
 
     /**
      * Clears the diversity table and calls updateUniqueGPs for each
-     * individual in the population. If 
+     * individual in the population. If
      * <a href="gpjpp.GPVariables.html#TestDiversity">TestDiversity</a>
      * is false, does nothing.
      */
@@ -394,8 +394,8 @@ public class GPPopulation extends GPContainer {
         }
     }
 
-    /** 
-     * Returns true if the specified GP is not already in the 
+    /**
+     * Returns true if the specified GP is not already in the
      * diversity table or if cfg.TestDiversity is false. If the
      * GP is already in the table, returns false and increments
      * attemptedDupCount. Used when creating an initial population.
@@ -415,7 +415,7 @@ public class GPPopulation extends GPContainer {
 
     /**
      * Creates all of the individuals in an initial population. If
-     * cfg.TestForDiversity is true, tries up to 50 times per 
+     * cfg.TestForDiversity is true, tries up to 50 times per
      * individual to create a unique GP. Also tries up to 50 times per
      * individual to create GPs whose complexity is less than
      * cfg.MaximumComplexity and increments attemptedComplexCount for
@@ -429,8 +429,8 @@ public class GPPopulation extends GPContainer {
      * to create each individual in the population.<p>
      *
      * create() uses one of several tree-building strategies depending
-     * on the value of the configuration variable 
-     * <a href="gpjpp.GPVariables.html#CreationType">CreationType</a>. 
+     * on the value of the configuration variable
+     * <a href="gpjpp.GPVariables.html#CreationType">CreationType</a>.
      * If this variable equals GPRAMPEDHALF (the default), alternating
      * individuals are created using GPGROW (function nodes to
      * maximum depth) and GPVARIABLE (nodes chosen with a 50:50
@@ -440,10 +440,10 @@ public class GPPopulation extends GPContainer {
      *
      * If CreationType equals GPRAMPEDVARIABLE, all individuals are
      * created using the GPVARIABLE strategy and the depth of
-     * successive individuals is ramped from minTreeDepth to 
+     * successive individuals is ramped from minTreeDepth to
      * MaximumDepthForCreation.<p>
      *
-     * If CreationType equals GPRAMPEDGROW, all individuals are 
+     * If CreationType equals GPRAMPEDGROW, all individuals are
      * created using the GPGROW strategy and the depth of successive
      * individuals is ramped.<p>
      *
@@ -465,8 +465,8 @@ public class GPPopulation extends GPContainer {
      * RuntimeException is thrown.<p>
      *
      * After each individual is created, its fitness is calculated
-     * by calling <a href="gpjpp.GP.html#evaluate">GP.evaluate()</a>. 
-     * After all individuals are created, 
+     * by calling <a href="gpjpp.GP.html#evaluate">GP.evaluate()</a>.
+     * After all individuals are created,
      * <a href="gpjpp.GPPopulation.html#calculateStatistics">
      * calculateStatistics()</a> is called.
      */
@@ -522,7 +522,7 @@ public class GPPopulation extends GPContainer {
             //attempt to build a unique tree of allowable complexity
             int tries = 0;
             do {
-                newGP.create(creationType, depth, 
+                newGP.create(creationType, depth,
                     cfg.MaximumComplexity, adfNs);
 
                 if (newGP.length() > cfg.MaximumComplexity) {
@@ -681,11 +681,11 @@ public class GPPopulation extends GPContainer {
      * Selects one or more individuals from the specified range of
      * the population by using a roulette algorithm. Each individual
      * in the specified range has a probability of selection equal
-     * to its fitness divided by the sum total fitness of all 
-     * individuals in the range. Complexity does not play a role 
-     * in the selection unless it has already been factored into the 
-     * fitness. All fitness values must be non-negative or this method 
-     * may hang or produce unexpected results. When selectWorst is false, 
+     * to its fitness divided by the sum total fitness of all
+     * individuals in the range. Complexity does not play a role
+     * in the selection unless it has already been factored into the
+     * fitness. All fitness values must be non-negative or this method
+     * may hang or produce unexpected results. When selectWorst is false,
      * adjusted fitness is used; otherwise standardized fitness is used.
      *
      * @param selected  an array that, upon return, must contain
@@ -699,7 +699,7 @@ public class GPPopulation extends GPContainer {
      *          demetic migration is enabled, this is the entire
      *          population.
      */
-    protected void probabilisticSelection(int[] selected, 
+    protected void probabilisticSelection(int[] selected,
         int numToSelect, boolean selectWorst, GPPopulationRange range) {
 
         int i;
@@ -767,12 +767,12 @@ public class GPPopulation extends GPContainer {
      * the search stops when the normalized sum is within 0.005
      * of c.<p>
      *
-     * The routine stores values in the fields cutoffAdjFitness, 
+     * The routine stores values in the fields cutoffAdjFitness,
      * sumG1AdjFitness, and sumG2AdjFitness. It assumes that
      * sumAdjFitness has already been calculated by calling
      * sumFitnessRange().
      *
-     * @param range  the range of indices from which to select. Demetic 
+     * @param range  the range of indices from which to select. Demetic
      *          migration is always disabled when greedy selection
      *          is enabled, so this is the entire population. The
      *          routine would work for restricted ranges, but
@@ -826,11 +826,11 @@ public class GPPopulation extends GPContainer {
      * Selects one or more individuals from the specified range of
      * the population by using Koza's "greedy over-selection". This
      * divides the population into two groups based on an adjusted
-     * fitness boundary, such that the sum of the adjusted fitness 
-     * for the first, higher-fitness group has a specified proportion 
-     * c of the total adjusted fitness. By Koza's definition c equals 
-     * 0.32 for population size 1000, 0.16 for 2000, 0.08 for 4000, 
-     * and so on. Then, 80% of the time the method returns an 
+     * fitness boundary, such that the sum of the adjusted fitness
+     * for the first, higher-fitness group has a specified proportion
+     * c of the total adjusted fitness. By Koza's definition c equals
+     * 0.32 for population size 1000, 0.16 for 2000, 0.08 for 4000,
+     * and so on. Then, 80% of the time the method returns an
      * individual from group I using probabilistic selection and
      * the other 20% it returns an individual from group II using
      * probabilistic selection.
@@ -842,7 +842,7 @@ public class GPPopulation extends GPContainer {
      * @param selectWorst  true if the routine is to select the
      *          worst individuals from the range, false to select
      *          the best.
-     * @param range  the range of indices from which to select. Demetic 
+     * @param range  the range of indices from which to select. Demetic
      *          migration is always disabled when greedy selection
      *          is enabled, so this is the entire population.
      *
@@ -916,12 +916,12 @@ public class GPPopulation extends GPContainer {
 
     /**
      * Calls one of the available selection methods based on the
-     * configuration variable 
-     * <a href="gpjpp.GPVariables.html#SelectionType">SelectionType</a>. 
-     * Override this method if you want to implement a new selection 
+     * configuration variable
+     * <a href="gpjpp.GPVariables.html#SelectionType">SelectionType</a>.
+     * Override this method if you want to implement a new selection
      * technique.
      *
-     * @exception java.lang.RuntimeException 
+     * @exception java.lang.RuntimeException
      *          if numToSelect is less than 1, or
      *          if the specified range is empty, or
      *          if an unknown selection method is specified.
@@ -983,7 +983,7 @@ public class GPPopulation extends GPContainer {
      * @param range the range of indices from which to select. Unless
      *          demetic migration is enabled, this is the entire
      *          population.
-     * @return an array of GP references holding the selected 
+     * @return an array of GP references holding the selected
      *          individuals. The length of the array exactly
      *          matches the number of individuals in it.
      *
@@ -1027,7 +1027,7 @@ public class GPPopulation extends GPContainer {
     }
 
     /**
-     * Calls <a href="gpjpp.GPPopulation.html#select">select()</a> to 
+     * Calls <a href="gpjpp.GPPopulation.html#select">select()</a> to
      * select exactly two parents for use in crossover.
      */
     protected GPContainer selectParents(GPPopulationRange range) {
@@ -1038,23 +1038,23 @@ public class GPPopulation extends GPContainer {
     private int treeDepth = 2;
 
     /**
-     * Based on the configuration variables 
+     * Based on the configuration variables
      * <a href="gpjpp.GPVariables.html#CrossoverProbability">
      * CrossoverProbability</a> and
      * <a href="gpjpp.GPVariables.html#CreationProbability">
      * CreationProbability</a>, creates two individuals using
      * crossover or one new individual using creation (a brand-new
      * GP) or reproduction (a fitness-selected copy of an existing
-     * individual). The new individuals are guaranteed to have 
-     * depth no more than 
+     * individual). The new individuals are guaranteed to have
+     * depth no more than
      * <a href="gpjpp.GPVariables.html#MaximumDepthForCrossover">
-     * MaximumDepthForCrossover</a> or 
+     * MaximumDepthForCrossover</a> or
      * <a href="gpjpp.GPVariables.html#MaximumDepthForCreation">
-     * MaximumDepthForCreation</a> and complexity no more than 
+     * MaximumDepthForCreation</a> and complexity no more than
      * <a href="gpjpp.GPVariables.html#MaximumComplexity">
      * MaximumComplexity</a>.<p>
      *
-     * Brand-new individuals are created using the 
+     * Brand-new individuals are created using the
      * <a href="gpjpp.GPVariables.html#GPVARIABLE">GPVARIABLE</a>
      * strategy with depth ramped between calls to this method.<p>
      *
@@ -1063,15 +1063,15 @@ public class GPPopulation extends GPContainer {
      * reproduction of an existing individual.<p>
      *
      * Mutation does not occur in this method but rather as an
-     * independent step in 
-     * <a href="gpjpp.GPPopulation.html#generate">generate()</a>. 
-     * Thus an individual passed on via reproduction could still 
+     * independent step in
+     * <a href="gpjpp.GPPopulation.html#generate">generate()</a>.
+     * Thus an individual passed on via reproduction could still
      * undergo mutation.
      *
      * @param range the range of indices from which to select. Unless
      *          demetic migration is enabled, this is the entire
      *          population.
-     * @return an array of GP references holding the selected 
+     * @return an array of GP references holding the selected
      *          individuals. The length of the array is 2 for
      *          individuals created via crossover and 1 for individuals
      *          generated by creation or reproduction.
@@ -1101,7 +1101,7 @@ public class GPPopulation extends GPContainer {
                 int attempts = 0;
 
                 //use simple variable grow method
-                newGP.create(GPVariables.GPVARIABLE, 
+                newGP.create(GPVariables.GPVARIABLE,
                     treeDepth, cfg.MaximumComplexity, adfNs);
 
                 if (newGP.length() <= cfg.MaximumComplexity)
@@ -1155,20 +1155,20 @@ public class GPPopulation extends GPContainer {
 
     /**
      * Generates the next generation of individuals using genetic
-     * processes. If the configuration variable 
+     * processes. If the configuration variable
      * <a href="gpjpp.GPVariables.html#SteadyState">SteadyState</a> is
      * true, the newPop parameter is ignored and the next generation
      * is created by replacing the worst (fitness-based) individuals
      * in the current generation with new individuals. Otherwise,
      * newPop is filled in from scratch with new individuals. In either
-     * case, 
-     * <a href="gpjpp.GPVariables.html#PopulationSize">PopulationSize</a> 
+     * case,
+     * <a href="gpjpp.GPVariables.html#PopulationSize">PopulationSize</a>
      * individuals are created and added to the new generation.<p>
      *
      * If <a href="gpjpp.GPVariables.html#DemeticGrouping">
      * DemeticGrouping</a> is true, the overall population is divided
-     * into "demes" of size 
-     * <a href="gpjpp.GPVariables.html#DemeSize">DemeSize</a> and each 
+     * into "demes" of size
+     * <a href="gpjpp.GPVariables.html#DemeSize">DemeSize</a> and each
      * of these is treated individually as a subpopulation.<p>
      *
      * If <a href="gpjpp.GPVariables.html#AddBestToNewPopulation">
@@ -1176,21 +1176,21 @@ public class GPPopulation extends GPContainer {
      * false, the best individual in this population is automatically
      * added to the new population at its same index location.<p>
      *
-     * After each new individual or pair of individuals is generated 
-     * by <a href="gpjpp.GPPopulation.html#evolve">evolve()</a>, 
-     * generate() calls 
-     * <a href="gpjpp.GP.html#mutate">mutate()</a> to possibly modify 
+     * After each new individual or pair of individuals is generated
+     * by <a href="gpjpp.GPPopulation.html#evolve">evolve()</a>,
+     * generate() calls
+     * <a href="gpjpp.GP.html#mutate">mutate()</a> to possibly modify
      * the new individuals further.<p>
      *
      * If <a href="gpjpp.GPVariables.html#TestDiversity">TestDiversity</a>
-     * is true, the diversity table is updated while the new population 
-     * is built to keep track of duplicates. No duplicates are rejected 
+     * is true, the diversity table is updated while the new population
+     * is built to keep track of duplicates. No duplicates are rejected
      * within generate(), however.<p>
      *
-     * After the new population is generated, 
+     * After the new population is generated,
      * <a href="gpjpp.GPPopulation.html#demeticMigration">
-     * demeticMigration()</a> is called if this feature is activated. 
-     * Population statistics are always calculated for the new 
+     * demeticMigration()</a> is called if this feature is activated.
+     * Population statistics are always calculated for the new
      * generation.
      *
      * @param newPop  an instantiated new population to fill.
@@ -1291,11 +1291,11 @@ public class GPPopulation extends GPContainer {
     private GPPopulationRange range2 = new GPPopulationRange();
 
     /**
-     * Based on the configuration variable 
+     * Based on the configuration variable
      * <a href="gpjpp.GPVariables.html#DemeticMigProbability">
-     * DemeticMigProbability</a>, fitness-selects a good individual 
-     * from each deme and exchanges it with a good individual from the 
-     * next deme. This process occurs for each adjacent pair of demes, 
+     * DemeticMigProbability</a>, fitness-selects a good individual
+     * from each deme and exchanges it with a good individual from the
+     * next deme. This process occurs for each adjacent pair of demes,
      * and the last deme is considered to be adjacent to the first deme.
      */
     protected synchronized void demeticMigration() {
@@ -1501,7 +1501,7 @@ public class GPPopulation extends GPContainer {
         if (cfg.TestDiversity)
             sout.print("|");
         sout.println();
-    }               
+    }
 
     /**
      * Prints one generation's statistics to the specified PrintStream.
@@ -1510,14 +1510,14 @@ public class GPPopulation extends GPContainer {
      * of the best, average, and worst individuals; the depth of the
      * best, average, and worst individuals; and the diversity of the
      * population if cfg.TestDiversity is true. If this generation has
-     * been saved to a stream by GPRun's checkpointing facility, the 
+     * been saved to a stream by GPRun's checkpointing facility, the
      * letter 'c' is printed at the end of the line.
      *
      * @param generation  the generation number.
      * @param chk  the checkpoint character ('c' or ' ').
      * @param sout  the statistics PrintStream
      */
-    public void printStatistics(int generation, char chk, 
+    public void printStatistics(int generation, char chk,
         PrintStream sout) {
 
         sout.print(formatInt(generation, 4));
@@ -1560,13 +1560,13 @@ public class GPPopulation extends GPContainer {
      *
      * @param len   the length of the string to return.
      * @param index the population index of the parent.
-     * @param tree  the branch number in which crossover or 
+     * @param tree  the branch number in which crossover or
      *              mutation occurred. Branch 0 is converted to
      *              "RPB", branch 1 is converted to "ADF0", and so on.
      * @param cut   the s-expression index at which crossover or
      *              mutation occurred.
      */
-    protected String formatParentage(int len, int index, int tree, 
+    protected String formatParentage(int len, int index, int tree,
         int cut) {
 
         String sIndex;
@@ -1635,11 +1635,11 @@ public class GPPopulation extends GPContainer {
      * its standardized fitness, complexity, and depth.<p>
      *
      * If showExpression is true, the GP's printOn() method is called
-     * to print the s-expression. If showTree is true, the GP's 
-     * printTree() method is called to print the expression in 
+     * to print the s-expression. If showTree is true, the GP's
+     * printTree() method is called to print the expression in
      * pseudo-graphic text format.
      */
-    public void printIndividual(GP current, int num, 
+    public void printIndividual(GP current, int num,
         boolean showExpression, boolean showTree, PrintStream dout) {
 
         if (num == bestOfPopulation)
@@ -1680,7 +1680,7 @@ public class GPPopulation extends GPContainer {
      * all individuals, the best, and/or the worst depending on the
      * parameters passed to the method.
      */
-    public void printDetails(int generation, 
+    public void printDetails(int generation,
         boolean showAll, boolean showBest, boolean showWorst,
         boolean showExpression, boolean showTree, PrintStream dout) {
 
@@ -1714,7 +1714,7 @@ public class GPPopulation extends GPContainer {
 
     /**
      * Loads a GPPopulation from the specified stream. Reads all
-     * of the GPs from the stream, then rebuilds the diversity table and 
+     * of the GPs from the stream, then rebuilds the diversity table and
      * recalculates the population statistics. Note that GPPopulation
      * doesn't have a save() method because its superclass GPContainer
      * does everything that's necessary in its save() method.
