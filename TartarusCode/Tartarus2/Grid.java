@@ -23,7 +23,8 @@ public class Grid {
     public final static int UL = 8;
     public final static int ML = 9;
     public final static int LL = 10;
-    public final static int FC = 11;
+    //public final static int ES = 11;
+    public final static int IL = 11;
 
     // grid private vars
     private char[][] grid;
@@ -36,6 +37,9 @@ public class Grid {
     private int dozerFacing;
     private int steps;
     private int originalSteps = 20;
+    private int minAxis = 0;
+    private int maxAxis = 0;
+    String[] robotDirs = new String[] {"\u02F2", "\u02F0", "\u02F1", "\u02EF"};
     char[] dirs = new char[] {'e','n','w','s'};
 
     // if no seed given, use -1 for cur time
@@ -241,6 +245,13 @@ public class Grid {
                 //record that step spent not moving
 		            if (out != null) updateFile(out, dozerX, dozerY, dozerFacing);
                 return;
+        if (grid[frontX][frontY] == grid[checkX][checkY] == robotDirs[0].charAt(0) || grid[frontX][frontY] == robotDirs[1].charAt(0) ||
+        grid[frontX][frontY] == robotDirs[2].charAt(0) || grid[frontX][frontY] == robotDirs[3].charAt(0)) {
+            // if has wall or another block behind it, do nothing
+            //if (forw2X<0 || forw2X>=xdim || forw2Y<0 || forw2Y>=ydim || grid[forw2X][forw2Y]=='b') {
+                //record that step spent not moving
+		            if (out != null) updateFile(out, dozerX, dozerY, dozerFacing);
+                return;
             //}
 
             // if clear behind block, move block
@@ -306,11 +317,98 @@ public class Grid {
         // if box to check is out of bounds, return 2 for wall
         if (checkX < 0 || checkY < 0 || checkX >= xdim || checkY >= ydim) return 2;
 
-        // otherwise 0 for empty and 1 for box
-        if (grid[checkX][checkY] == 'b')
+        //otherwise 0 for empty and 1 for box
+        if (grid[checkX][checkY] == robotDirs[0].charAt(0) || grid[checkX][checkY] == robotDirs[1].charAt(0) ||
+        grid[checkX][checkY] == robotDirs[2].charAt(0) || grid[checkX][checkY] == robotDirs[3].charAt(0))
             return 1;
         else
             return 0;
+    }
+
+    public int exitSweep() {
+      if (dirs[dozerFacing] == 'w') {
+          if (dozerX > exitX)
+            return 1;
+      }
+      else if (dirs[dozerFacing] == 'e') {
+        if (dozerX < exitX)
+          return 1;
+      }
+      else if (dirs[dozerFacing] == 'n') {
+        if (dozerY > exitY)
+          return 1;
+      }
+      else if (dirs[dozerFacing] == 's') {
+        if (dozerY < exitY)
+          return 1;
+      }
+      return 0;
+    }
+
+    public boolean unobstructed(int dir) {
+      minAxis = 0;
+      maxAxis = 0;
+      System.out.println("RUNNING UNOBSTRUCTED!");
+      if (dir == 0 || dir == 2){
+        if (dozerX <= exitX){
+          minAxis = dozerX;
+          maxAxis = exitX;
+        }
+        else {
+          minAxis = exitX;
+          maxAxis = dozerX;
+        }
+
+        for (int i = minAxis; i < maxAxis; i++){
+          if (grid[i][dozerY] == robotDirs[0].charAt(0) || grid[i][dozerY] == robotDirs[1].charAt(0) ||
+          grid[i][dozerY] == robotDirs[2].charAt(0) || grid[i][dozerY] == robotDirs[3].charAt(0)){
+            return false;
+          }
+        }
+      }
+
+      else{
+        if (dozerY <= exitY){
+          minAxis = dozerY;
+          maxAxis = exitY;
+        }
+        else {
+          minAxis = exitY;
+          maxAxis = dozerY;
+        }
+
+        for (int i = minAxis; i < maxAxis; i++){
+          if (grid[dozerX][i] == robotDirs[0].charAt(0) || grid[dozerX][i] == robotDirs[1].charAt(0) ||
+          grid[dozerX][i] == robotDirs[2].charAt(0) || grid[dozerX][i] == robotDirs[3].charAt(0)){
+            return false;
+          }
+        }
+      }
+      return true;
+    }
+
+    public int lineCheck() {
+      if (dirs[dozerFacing] == 'w') {
+          if (dozerX > exitX && dozerY == exitY)
+            if (unobstructed(2))
+              return 1;
+      }
+      else if (dirs[dozerFacing] == 'e') {
+        if (dozerX < exitX && dozerY == exitY)
+          if (unobstructed(0))
+            return 1;
+      }
+      else if (dirs[dozerFacing] == 'n') {
+        if (dozerY > exitY && dozerX == exitX)
+          if (unobstructed(1))
+            return 1;
+      }
+      else if (dirs[dozerFacing] == 's') {
+        if (dozerY < exitY && dozerX == exitX)
+          if (unobstructed(3))
+            return 1;
+      }
+      return 0;
     }
 
     // determine the fitness of the current state of the grid. fitness is (maxScore+1) - score

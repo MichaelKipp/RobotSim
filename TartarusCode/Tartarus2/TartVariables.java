@@ -24,8 +24,8 @@ import gpjpp.*;
 public class TartVariables extends GPVariables {
 
     //dimensions of simulation grid
-    public int WorldHorizontal = 6;
-    public int WorldVertical = 6;
+    public int WorldHorizontal = 8;
+    public int WorldVertical = 8;
 
     //number of random Tartarus grids to test each genome on during evaluation
     public int NumTestGrids = 10;
