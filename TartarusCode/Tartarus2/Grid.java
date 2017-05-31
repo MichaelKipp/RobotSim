@@ -1,6 +1,7 @@
 /*
  * Authors: Michael Kipp, Jordan Aron
  * Class: Evolutionary Computation & Artificial Life
+ * Date: 5/31/17
  * Adapted from code by Sherri Goings
  */
 
@@ -23,6 +24,7 @@ public class Grid {
     public final static int UL = 8;
     public final static int ML = 9;
     public final static int LL = 10;
+    // Main function that sweeps for the exit.
     public final static int ES = 11;
     //public final static int IL = 11;
     public final static int prog2 = 12;
@@ -32,6 +34,7 @@ public class Grid {
     // grid private vars
     private char[][] grid;
     private int xdim, ydim;
+    // Keeps track of the exit spot
     private int exitX = 1, exitY = 1;
     private boolean finished;
     private Random rgen;
@@ -546,6 +549,8 @@ public class Grid {
       return finished;
     }
 
+    // Main running function for interfering robots. Loops through the bots
+    // and executes their specific strategies.
     public void evalOthers() {
       for (int i = 0; i < numBots; i++) {
         switch (bots[i][3]) {
@@ -562,6 +567,7 @@ public class Grid {
       }
     }
 
+    // Strategy for moving bots randomly
     public void moveRandom(int bot, int x, int y, int dir) {
       switch (rgen.nextInt(3)) {
         case 0:
@@ -576,6 +582,7 @@ public class Grid {
       }
     }
 
+    // Strategy for making bots turn right at a wall but otherwise go forwards
     public void goRightAtWall(int bot, int x, int y, int dir) {
       if (goForward(bot, x, y, dir)) {
 
@@ -584,6 +591,7 @@ public class Grid {
         turnRight(bot, x, y, dir);
     }
 
+    // Strategy for making bots go in a diagonal direction and deflect off of walls
     public void goDiagonal(int bot, int x, int y, int dir, int forward, int left) {
       if (forward == 1) {
         bots[bot][4] = 0;
@@ -605,6 +613,7 @@ public class Grid {
         }
     }
 
+    // Bot specific forward function
     public boolean goForward(int bot, int x, int y, int dir) {
       int frontX = x, frontY = y;
       if (dir==0) {
@@ -635,12 +644,14 @@ public class Grid {
       return true;
     }
 
+    // Bot specific turn right function
     public void turnRight(int bot, int x, int y, int dir) {
       bots[bot][2] = bots[bot][2] - 1;
       if (bots[bot][2] < 0) bots[bot][2] = 3;
       grid[bots[bot][0]][bots[bot][1]] = robotDirs[bots[bot][2]].charAt(0);
     }
 
+    // Bot specific turn left function
     public void turnLeft(int bot, int x, int y, int dir) {
       bots[bot][2] = (dir + 1) % 4;
       grid[bots[bot][0]][bots[bot][1]] = robotDirs[bots[bot][2]].charAt(0);
