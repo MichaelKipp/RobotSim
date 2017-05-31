@@ -25,6 +25,9 @@ public class Grid {
     public final static int LL = 10;
     //public final static int ES = 11;
     public final static int IL = 11;
+    public final static int prog2 = 12;
+    public final static int prog3 = 13;
+    public final static int CS = 14;
 
     // grid private vars
     private char[][] grid;
@@ -39,6 +42,7 @@ public class Grid {
     private int originalSteps = 20;
     private int minAxis = 0;
     private int maxAxis = 0;
+    private int mainAxis = 0;
     String[] robotDirs = new String[] {"\u02F2", "\u02F0", "\u02F1", "\u02EF"};
     char[] dirs = new char[] {'e','n','w','s'};
 
@@ -240,12 +244,10 @@ public class Grid {
 
         // if facing block
         if (grid[frontX][frontY] == 'X') {
-            // if has wall or another block behind it, do nothing
-            //if (forw2X<0 || forw2X>=xdim || forw2Y<0 || forw2Y>=ydim || grid[forw2X][forw2Y]=='b') {
-                //record that step spent not moving
 		            if (out != null) updateFile(out, dozerX, dozerY, dozerFacing);
                 return;
-        if (grid[frontX][frontY] == grid[checkX][checkY] == robotDirs[0].charAt(0) || grid[frontX][frontY] == robotDirs[1].charAt(0) ||
+              }
+        if (grid[frontX][frontY] == robotDirs[0].charAt(0) || grid[frontX][frontY] == robotDirs[1].charAt(0) ||
         grid[frontX][frontY] == robotDirs[2].charAt(0) || grid[frontX][frontY] == robotDirs[3].charAt(0)) {
             // if has wall or another block behind it, do nothing
             //if (forw2X<0 || forw2X>=xdim || forw2Y<0 || forw2Y>=ydim || grid[forw2X][forw2Y]=='b') {
@@ -407,6 +409,56 @@ public class Grid {
         if (dozerY < exitY && dozerX == exitX)
           if (unobstructed(3))
             return 1;
+      }
+      return 0;
+    }
+
+
+    public int coneScan(){
+      //In the nested for loop change the +3 to +1 for smaller width
+      System.out.println("RUNNING CONESCAN!");
+      //System.out.println("DozerX is " + dozerX + "and DozerY is " + dozerY);
+      if (dirs[dozerFacing] == 'n'){
+        for (int i = 0; i < dozerY; i++){
+          for (int j = 0; j < (2*i)+3; j++){
+            if ((dozerY - 1 - i) == exitY && ((j-i) + dozerX) == exitX){
+              System.out.println("EXIT FOUND!");
+              return 1;
+            }
+          }
+        }
+      }
+      else if (dirs[dozerFacing] == 's') {
+        mainAxis = (ydim - dozerY);
+        for (int i = 0; i < mainAxis; i++){
+          for (int j = 0; j < (2*i)+3; j++){
+            if ((i + dozerY + 1) == exitY && ((j-i) + dozerX) == exitX){
+              System.out.println("EXIT FOUND!");
+              return 1;
+            }
+          }
+        }
+      }
+      else if (dirs[dozerFacing] == 'w') {
+        for (int i = 0; i< dozerX; i++){
+          for (int j = 0; j < (2*i)+3; j++){
+            if ((dozerX - i - 1) == exitX && ((j - i) + dozerY) == exitY){
+              System.out.println("EXIT FOUND!");
+              return 1;
+            }
+          }
+        }
+      }
+      else if (dirs[dozerFacing] == 'e') {
+        mainAxis = xdim - dozerX;
+        for (int i = 0; i < mainAxis; i++){
+          for (int j = 0; j < (2*i) + 3; j++){
+            if( (i + dozerX + 1) == exitX && ((j - i) + dozerY) == exitY ){
+              System.out.println("EXIT FOUND!");
+              return 1;
+            }
+          }
+        }
       }
       return 0;
     }
