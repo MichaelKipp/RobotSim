@@ -55,7 +55,7 @@ public class TartGene extends GPGene {
 
   	// terminal, dozer takes corresponding action
           if (val<=2) {
-              cfg.dozerGrid.print();
+            cfg.dozerGrid.print();
               if(out != null){
                   if (val == Grid.LFT) cfg.dozerGrid.left(out);
                   else if (val==Grid.RGT) cfg.dozerGrid.right(out);
@@ -65,6 +65,7 @@ public class TartGene extends GPGene {
                   else if (val==Grid.RGT) cfg.dozerGrid.right();
                   else if (val==Grid.FWD) cfg.dozerGrid.forward();
               }
+              cfg.dozerGrid.evalOthers();
           }
 
   	// sensor, evaluate left child if chosen square is empty,
@@ -87,12 +88,12 @@ public class TartGene extends GPGene {
                   result = cfg.dozerGrid.sensor(0, 1);
               else if (val==Grid.LL)
                   result = cfg.dozerGrid.sensor(-1, 1);
-              // else if (val==Grid.ES)
-              //     result = cfg.dozerGrid.exitSweep();
-              else if (val==Grid.IL)
-                  result = cfg.dozerGrid.lineCheck();
-              else if (val==Grid.CS)
-                  result = cfg.dozerGrid.coneScan();
+              else if (val==Grid.ES)
+                  result = cfg.dozerGrid.exitSweep();
+              // else if (val==Grid.IL)
+              //     result = cfg.dozerGrid.lineCheck();
+              // else if (val==Grid.CS)
+              //     result = cfg.dozerGrid.coneScan();
                   //System.out.println(cfg.dozerGrid.coneScan());
 
               ( (TartGene)get(result) ).evaluate(cfg, gp, os, out);

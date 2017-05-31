@@ -23,11 +23,11 @@ public class Grid {
     public final static int UL = 8;
     public final static int ML = 9;
     public final static int LL = 10;
-    //public final static int ES = 11;
-    public final static int IL = 11;
+    public final static int ES = 11;
+    //public final static int IL = 11;
     public final static int prog2 = 12;
     public final static int prog3 = 13;
-    public final static int CS = 14;
+    //public final static int CS = 14;
 
     // grid private vars
     private char[][] grid;
@@ -35,7 +35,7 @@ public class Grid {
     private int exitX = 1, exitY = 1;
     private boolean finished;
     private Random rgen;
-    private int numBoxes = 0;
+    private int numBots = 0;
     private int dozerX, dozerY;
     private int dozerFacing;
     private int steps;
@@ -43,19 +43,23 @@ public class Grid {
     private int minAxis = 0;
     private int maxAxis = 0;
     private int mainAxis = 0;
+    // Arrat holding the other robots information. x, y, direction, strategy, forward, left.
+    private int[][] bots;
+
     String[] robotDirs = new String[] {"\u02F2", "\u02F0", "\u02F1", "\u02EF"};
     char[] dirs = new char[] {'e','n','w','s'};
 
     // if no seed given, use -1 for cur time
-    public Grid(int xdim, int ydim, int numBoxes) {
-	     this(xdim, ydim, numBoxes, -1);
+    public Grid(int xdim, int ydim, int numBots) {
+	     this(xdim, ydim, numBots, -1);
     }
 
     // create a Grid of characters with the given dimensions and number of boxes
-    public Grid(int xdim, int ydim, int numBoxes, int seed) {
+    public Grid(int xdim, int ydim, int numBots, int seed) {
         this.xdim = xdim;
         this.ydim = ydim;
-        this.numBoxes = numBoxes;
+        this.numBots = numBots;
+        bots = new int[numBots][6];
         finished = false;
       	// grid is just 2d array of chars, initially fill with spaces
       	grid = new char[xdim][ydim];
@@ -81,34 +85,23 @@ public class Grid {
     // as bulldozer could not move any of them no matter how good the strategy
     private void initGrid() {
 
-        int toPlace = numBoxes;
-        int remLocs = (xdim-2)*(ydim-2);
-        int x=1, y=1;
+        int toPlace = numBots;
+        int loc = 0;
+        int x = 1, y = 1;
         int gridEndGate;
 
         while (toPlace > 0) {
-
-            // the probability that this square should get a block is
-	    // (blocks still to place) / (squares not yet considered)
-	    // Note that this probability will grow to 1 when there are only as
-	    // many squares left as there are blocks to place.
-            double p = (double)toPlace/remLocs;
-            if (rgen.nextDouble() < p) {
-		// only place if won't create a 2x2 square of blocks
-		// if p is 1, place block even if creates square, so as to avoid infinitie loop
-                if (grid[x-1][y]!='b' || grid[x][y-1]!='b' || grid[x-1][y-1]!='b' || p>=0.99) {
-                    grid[x][y] = 'b';
-		                    toPlace--;
-		            }
-            }
-            remLocs--;
-
-            // at end of each row, move to beginning of next row
-            if (++x == xdim-1) {
-                x=1;
-                y++;
-            }
+          loc = rgen.nextInt((xdim - 4) * (ydim - 4));
+          System.out.println("loc: " + loc);
+          if (grid[(loc / (xdim - 4)) + 2][(loc % (ydim - 4)) + 2] == ' ') {
+            bots[numBots - toPlace][0] = (loc / (xdim - 4)) + 2;
+            bots[numBots - toPlace][1] = (loc % (ydim - 4)) + 2;
+            bots[numBots - toPlace][2] = rgen.nextInt(4);
+            bots[numBots - toPlace][3] = 2;
+            grid[(loc / (xdim - 4)) + 2][(loc % (ydim - 4)) + 2] = robotDirs[bots[numBots - toPlace][2]].charAt(0);
+            toPlace--;
         }
+      }
 
         // place dozer in random start location
         x = rgen.nextInt(xdim-xdim/2) + xdim/2 - 2;
@@ -284,7 +277,7 @@ public class Grid {
         dozerX = frontX;
         dozerY = frontY;
 
-	       if (out!= null) updateFile(out, dozerX, dozerY, dozerFacing);
+	      if (out!= null) updateFile(out, dozerX, dozerY, dozerFacing);
     }
 
     // frontOffset is 1 for square in front of dozer, 0 for inline with dozer, and -1 for behind
@@ -470,7 +463,7 @@ public class Grid {
         // System.out.println(originalSteps);
         // System.out.println(((double)steps)/((double)originalSteps));
         // System.out.println((steps/originalSteps) * 10);
-        System.out.println(0.0 + ((((double)steps + 1)/((double)originalSteps + 1)) * 10) + Math.sqrt(Math.pow((dozerX - exitX), 2) + Math.pow((dozerY - exitY), 2)));
+        // System.out.println(0.0 + ((((double)steps + 1)/((double)originalSteps + 1)) * 10) + Math.sqrt(Math.pow((dozerX - exitX), 2) + Math.pow((dozerY - exitY), 2)));
         return 0.0 + ((((double)steps + 1)/((double)originalSteps + 1)) * 10) + Math.sqrt(Math.pow((dozerX - exitX), 2) + Math.pow((dozerY - exitY), 2));
     }
 
@@ -551,5 +544,105 @@ public class Grid {
 
     public boolean getFinished() {
       return finished;
+    }
+
+    public void evalOthers() {
+      for (int i = 0; i < numBots; i++) {
+        switch (bots[i][3]) {
+          case 0:
+            moveRandom(i, bots[i][0], bots[i][1], bots[i][2]);
+            break;
+          case 1:
+            goRightAtWall(i, bots[i][0], bots[i][1], bots[i][2]);
+            break;
+          case 2:
+            goDiagonal(i, bots[i][0], bots[i][1], bots[i][2], bots[i][4], bots[i][5]);
+            break;
+        }
+      }
+    }
+
+    public void moveRandom(int bot, int x, int y, int dir) {
+      switch (rgen.nextInt(3)) {
+        case 0:
+          goForward(bot, x, y, dir);
+          break;
+        case 1:
+          turnLeft(bot, x, y, dir);
+          break;
+        case 2:
+          turnRight(bot, x, y, dir);
+          break;
+      }
+    }
+
+    public void goRightAtWall(int bot, int x, int y, int dir) {
+      if (goForward(bot, x, y, dir)) {
+
+      }
+      else
+        turnRight(bot, x, y, dir);
+    }
+
+    public void goDiagonal(int bot, int x, int y, int dir, int forward, int left) {
+      if (forward == 1) {
+        bots[bot][4] = 0;
+        if (left == 1) {
+          turnRight(bot, x, y, dir);
+          bots[bot][5] = 0;
+        }
+        else {
+          turnLeft(bot, x, y, dir);
+          bots[bot][5] = 1;
+        }
+      }
+      else
+        if(goForward(bot, x, y, dir))
+          bots[bot][4] = 1;
+        else {
+          turnLeft(bot, x, y, dir);
+          turnLeft(bot, x, y, dir);
+        }
+    }
+
+    public boolean goForward(int bot, int x, int y, int dir) {
+      int frontX = x, frontY = y;
+      if (dir==0) {
+          frontX++;
+      }
+      else if (dir==1) {
+          frontY--;
+      }
+      else if (dir==2) {
+          frontX--;
+      }
+      else {
+          frontY++;
+      }
+
+      if (frontX < 0 || frontY < 0 || frontX >= xdim || frontY >= ydim) {
+          return false;
+      }
+      if (grid[frontX][frontY] == 'X' || grid[frontX][frontY] != ' ') {
+          return false;
+      }
+
+      // bot moves
+      grid[frontX][frontY] = robotDirs[bots[bot][2]].charAt(0);
+      grid[x][y] = ' ';
+      bots[bot][0] = frontX;
+      bots[bot][1] = frontY;
+      return true;
+    }
+
+    public void turnRight(int bot, int x, int y, int dir) {
+      bots[bot][2] = bots[bot][2] - 1;
+      if (bots[bot][2] < 0) bots[bot][2] = 3;
+      grid[bots[bot][0]][bots[bot][1]] = robotDirs[bots[bot][2]].charAt(0);
+    }
+
+    public void turnLeft(int bot, int x, int y, int dir) {
+      bots[bot][2] = (dir + 1) % 4;
+      grid[bots[bot][0]][bots[bot][1]] = robotDirs[bots[bot][2]].charAt(0);
     }
 }

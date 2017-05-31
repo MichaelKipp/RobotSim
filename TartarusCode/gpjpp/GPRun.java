@@ -79,8 +79,8 @@ import java.util.Random;
  * GPRun is divided into a number of reasonably small routines so
  * that additional aspects of its behavior can be customized by
  * creating a subclass. Nevertheless, it is not suitable for
- * writing applets or other graphics-intensive Java applications. 
- * These could be written by using the lower level classes of gpjpp 
+ * writing applets or other graphics-intensive Java applications.
+ * These could be written by using the lower level classes of gpjpp
  * directly, since these classes enforce no user interface of their own.<p>
  *
  * @version 1.0
@@ -557,7 +557,7 @@ public abstract class GPRun {
     protected void showCreation(boolean preCreation) {
 
         if (preCreation) {
-            System.out.print("Creating initial population... ");
+            System.out.println("Creating initial population... ");
         } else {
             System.out.println("Ok");
 
@@ -610,7 +610,7 @@ public abstract class GPRun {
 
     /**
      * Prints information about the final generation of a run.
-     * Calls GPPopulation.printDetails to write information about the 
+     * Calls GPPopulation.printDetails to write information about the
      * run's best individual to sout. If cfg.PrintTree is true,
      * a GPDrawing drawing surface is created and GP.drawOn is
      * called to draw the best individual's trees to gif files.
@@ -845,7 +845,7 @@ public abstract class GPRun {
         if (cfg.CheckpointGens > 0) {
             cntGen--;
             if (cntGen <= 0) {
-                
+
                 if (cfg.TestCheckpoint) {
                     pop.testBest();
                 }

@@ -51,7 +51,6 @@ public class TartGP extends GP {
         for (int k = 0; k < tcfg.NumTestGrids; k++) {
             //create new random grid
             tcfg.createGrid();
-            System.out.println("---------- POPULATION " + k + "-----------");
             //evaluate main tree for max steps (set in .ini file) of the dozer
 	          tcfg.dozerGrid.setSteps(0);
 	          int done = 0;
